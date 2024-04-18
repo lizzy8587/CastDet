@@ -178,8 +178,12 @@ def main():
     #  We will be optimized later.
     inferencer = DetInferencer(**init_args)
 
-    chunked_size = call_args.pop('chunked_size')
-    inferencer.model.test_cfg.chunked_size = chunked_size
+    try:
+        chunked_size = call_args.pop('chunked_size')
+        inferencer.model.test_cfg.chunked_size = chunked_size
+    except:
+        import warnings
+        warnings.warn(Warning("'list' object has no attribute 'chunked_size'"))
 
     inferencer(**call_args)
 
