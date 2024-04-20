@@ -44,7 +44,7 @@ detector.roi_head=dict(
         reg_class_agnostic=True,
         fc_cls=dict(
                 type='Projection2',   # DictAttentionProjection | Projection | DictFeatureEnhanceProjection
-                vector_path="/home/ly/Documents/datasets/VisDrone2023/remoteCLIP_embeddings_normalized.npy",
+                vector_path="projects/CastDet/resources/remoteCLIP_embeddings_normalized.npy",
                 is_scale=True,
                 is_grad_bg=True,
                 is_grad=False
@@ -118,7 +118,7 @@ model = dict(
         ignore_bg=False,
         semi_bg_weight=0.05,
         unsup_cls_loss=True,
-        vector_path="/home/ly/Documents/datasets/VisDrone2023/remoteCLIP_embeddings_bgs_normalized.npy"
+        vector_path="projects/CastDet/resources/remoteCLIP_embeddings_bgs_normalized.npy"
     ),
     semi_test_cfg=dict(predict_on='teacher'))
 
@@ -158,4 +158,4 @@ default_hooks = dict(
 log_processor = dict(by_epoch=False)
 custom_hooks = [dict(type='MeanTeacherHook')]
 
-load_from = '/hhd/datasets/ly/SAVE_FILES/mmdetection/zsd/save/exp42_iter_76000_remote_clip.pth'
+load_from = 'your_merged_init_weights_path'

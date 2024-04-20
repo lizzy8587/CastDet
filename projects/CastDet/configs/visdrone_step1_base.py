@@ -85,7 +85,7 @@ model = dict(
 
 # training schedule for 180k
 train_cfg = dict(
-    type='IterBasedTrainLoop', max_iters=180000, val_interval=10000)
+    type='IterBasedTrainLoop', max_iters=80000, val_interval=10000)
 val_cfg = dict(type='TeacherStudentValLoop')
 test_cfg = dict(type='TestLoop')
 
