@@ -9,12 +9,31 @@
 ## Training framework
  ![framework](./projects/CastDet/resources/castdet_framework.png)
 
-## Prerequisites
+## Installation
 
-1. Installation: Please refer to [MMDetection](https://github.com/open-mmlab/mmdetection)
-2. Download Datasets | [VisDroneZSD Challenge2023](http://aiskyeye.com/submit-2023/zero-shot-object-detection/)
-3. Download [RemoteCLIP](https://github.com/ChenDelong1999/RemoteCLIP) via huggingface_hub
+```shell
+conda create --name openmmlab python=3.8 -y
+conda activate openmmlab
+conda install pytorch torchvision -c pytorch
+
+# Install MMEngine and MMCV using MIM.
+pip install -U openmim
+mim install mmengine
+mim install "mmcv>=2.0.0"
+
+git clone https://github.com/lizzy8587/CastDet.git
+cd CastDet
+pip install -v -e .
 ```
+
+Please refer to [MMDetection](https://github.com/open-mmlab/mmdetection) for more details.
+
+## Dataset
+- Download Datasets | [VisDroneZSD Challenge2023](http://aiskyeye.com/submit-2023/zero-shot-object-detection/)
+
+- Download [RemoteCLIP](https://github.com/ChenDelong1999/RemoteCLIP) via huggingface_hub
+
+```python
 from huggingface_hub import hf_hub_download
 checkpoint_path = hf_hub_download("chendelong/RemoteCLIP", f"RemoteCLIP-RN50.pt", cache_dir='checkpoints')
 ```
@@ -22,7 +41,7 @@ checkpoint_path = hf_hub_download("chendelong/RemoteCLIP", f"RemoteCLIP-RN50.pt"
 
 ## Training
 
-```python
+```shell
 ## prepare the base model
 python tools/train.py projects/CastDet/configs/visdrone_step1_base.py
 
@@ -33,14 +52,21 @@ python projects/CastDet/castdet/merge_weights.py --clip_path <clip_path> --base_
 python tools/train.py projects/CastDet/configs/visdrone_step2_castdet_16b_10k.py
 ```
 
+## Evaluation
+```shell
+python tools/test.py <config_path> <ckpt_path>
+```
+
 ## Inference
 
-```python
+```shell
 python demo/image_demo.py <img_path> <config_file> \
     --weights <ckpt_path> \
     --device cpu \
-    --pred-score-thr 0.3
+    --pred-score-thr <float>
 ```
+
+![](projects/CastDet/resources/visdrone_inference_vis.jpg)
 
 ## Acknowledgement
 
