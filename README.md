@@ -49,7 +49,7 @@ python tools/train.py projects/CastDet/configs/visdrone_step1_base.py
 python projects/CastDet/castdet/merge_weights.py --clip_path <clip_path> --base_path <base_model_path> --save_path <save_init_model_path> --base_model <soft-teacher (default) | faster-rcnn>
 
 ## training
-python tools/train.py projects/CastDet/configs/visdrone_step2_castdet_16b_10k.py
+python tools/train.py projects/CastDet/configs/visdrone_step2_castdet_12b_10k.py
 ```
 
 ## Evaluation
