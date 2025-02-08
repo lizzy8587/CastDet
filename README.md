@@ -98,6 +98,9 @@ python tools/train.py configs/visdrone_step1_base.py
 ## merge weights
 python tools/merge_weights.py --clip_path <clip_path> --base_path <base_model_path> --save_path <save_init_model_path> --base_model <soft-teacher (default) | faster-rcnn>
 
+### for example
+python tools/merge_weights.py --clip_path checkpoints/RemoteCLIP-RN50.pt --base_path work_dirs/visdrone_step1_base/iter_80000.pth --save_path checkpoints/init_80k.pth --base_model soft-teacher
+
 ## self-training
 python tools/train.py configs/visdrone_step2_castdet_12b_10k.py
 ```
@@ -134,5 +137,16 @@ If you find CastDet useful for your research, please use the following BibTeX en
       eprint={2311.11646},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
+}
+
+
+@misc{li2024exploitingunlabeleddatamultiple,
+      title={Exploiting Unlabeled Data with Multiple Expert Teachers for Open Vocabulary Aerial Object Detection and Its Orientation Adaptation}, 
+      author={Yan Li and Weiwei Guo and Xue Yang and Ning Liao and Shaofeng Zhang and Yi Yu and Wenxian Yu and Junchi Yan},
+      year={2024},
+      eprint={2411.02057},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2411.02057}, 
 }
 ```

@@ -12,7 +12,7 @@ import argparse
 import torch
 
 def merge_weights(clip_path, base_path, save_path, base_model='soft-teacher'):
-    clip = torch.load(clip_path).state_dict()
+    clip = torch.load(clip_path)#.state_dict()
     base = torch.load(base_path)
     save_dict = {}
     for k, v in base['state_dict'].items():

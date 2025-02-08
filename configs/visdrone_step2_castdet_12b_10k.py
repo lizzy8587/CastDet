@@ -1,6 +1,6 @@
 _base_ = [
     'mmdet::_base_/models/faster-rcnn_r50_fpn.py', 'mmdet::_base_/default_runtime.py',
-    './semi_visdrone_detection_v0.2.py'
+    './semi_visdrone_detection.py'
 ]
 work_dir = 'work_dirs/visdrone_step2_castdet_12b_10k'
 
@@ -156,4 +156,4 @@ default_hooks = dict(
 log_processor = dict(by_epoch=False)
 custom_hooks = [dict(type='MeanTeacherHook')]
 
-load_from = 'checkpoints/exp42_iter_76000_remote_clip.pth'
+load_from = 'checkpoints/init_80k.pth'

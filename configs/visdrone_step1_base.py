@@ -4,7 +4,7 @@ pretrain the model
 """
 _base_ = [
     'mmdet::_base_/models/faster-rcnn_r50_fpn.py', 'mmdet::_base_/default_runtime.py',
-    './semi_visdrone_detection_v0.1.py'
+    './semi_visdrone_detection.py'
 ]
 
 detector = _base_.model
