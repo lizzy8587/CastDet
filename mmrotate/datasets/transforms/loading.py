@@ -1,11 +1,64 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from typing import Sequence, Union
+import torch
 
 import mmcv
 from mmcv.transforms import BaseTransform
 
 from mmrotate.registry import TRANSFORMS
+from mmdet.datasets.transforms import LoadEmptyAnnotations as LoadEmptyHbbAnnotations
+import numpy as np
+from mmdet.structures.bbox.box_type import autocast_box_type
+from mmdet.structures.mask import BitmapMasks
+from mmdet.structures.bbox import get_box_type
 
+@TRANSFORMS.register_module()
+class LoadEmptyAnnotations(LoadEmptyHbbAnnotations):
+    def __init__(self,
+                 with_bbox: bool = True,
+                 with_label: bool = True,
+                 with_mask: bool = False,
+                 with_seg: bool = False,
+                 seg_ignore_label: int = 255,
+                 box_type: str = 'rbox') -> None:
+        self.with_bbox = with_bbox
+        self.with_label = with_label
+        self.with_mask = with_mask
+        self.with_seg = with_seg
+        self.seg_ignore_label = seg_ignore_label
+        self.box_type = box_type
+
+    def transform(self, results: dict) -> dict:
+        """Transform function to load empty annotations.
+
+        Args:
+            results (dict): Result dict.
+        Returns:
+            dict: Updated result dict.
+        """
+
+        if self.with_bbox:
+            results['gt_bboxes'] = np.zeros((0, 5), dtype=np.float32)
+
+            if self.box_type is None:
+                results['gt_bboxes'] = np.zeros((0, 5), dtype=np.float32)
+            else:
+                _, box_type_cls = get_box_type(self.box_type)
+                results['gt_bboxes'] = box_type_cls([], dtype=torch.float32)
+
+            results['gt_ignore_flags'] = np.zeros((0, ), dtype=bool)
+        if self.with_label:
+            results['gt_bboxes_labels'] = np.zeros((0, ), dtype=np.int64)
+        if self.with_mask:
+            # TODO: support PolygonMasks
+            h, w = results['img_shape']
+            gt_masks = np.zeros((0, h, w), dtype=np.uint8)
+            results['gt_masks'] = BitmapMasks(gt_masks, h, w)
+        if self.with_seg:
+            h, w = results['img_shape']
+            results['gt_seg_map'] = self.seg_ignore_label * np.ones(
+                (h, w), dtype=np.uint8)
+        return results
 
 @TRANSFORMS.register_module()
 class LoadPatchFromNDArray(BaseTransform):

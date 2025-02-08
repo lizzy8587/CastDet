@@ -38,7 +38,7 @@ RUNNER_CONSTRUCTORS = Registry(
 # manage all kinds of loops like `EpochBasedTrainLoop`
 LOOPS = Registry('loop', parent=MMENGINE_LOOPS)
 # manage all kinds of hooks like `CheckpointHook`
-HOOKS = Registry('hook', parent=MMENGINE_HOOKS)
+HOOKS = Registry('hook', parent=MMENGINE_HOOKS, locations=['mmrotate.engine.hooks'])
 
 # manage data-related modules
 DATASETS = Registry('dataset', parent=MMENGINE_DATASETS)

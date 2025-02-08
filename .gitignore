@@ -121,6 +121,11 @@ dmypy.json
 data/
 data
 tmp
+debug_demo*
 
 # custom
 mmrotate/.mim
+.bak
+.vscode
+outputs/
+checkpoints*

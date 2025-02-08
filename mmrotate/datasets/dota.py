@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import glob
 import os.path as osp
-from typing import List
+from typing import List, Optional
 
 from mmengine.dataset import BaseDataset
 
@@ -40,9 +40,16 @@ class DOTADataset(BaseDataset):
     def __init__(self,
                  diff_thr: int = 100,
                  img_suffix: str = 'png',
+                 return_classes: bool = False,
+                 caption_prompt: Optional[dict] = None,
                  **kwargs) -> None:
         self.diff_thr = diff_thr
         self.img_suffix = img_suffix
+        self.return_classes = return_classes
+        self.caption_prompt = caption_prompt
+        if self.caption_prompt is not None:
+            assert self.return_classes, \
+                'return_classes must be True when using caption_prompt'
         super().__init__(**kwargs)
 
     def load_data_list(self) -> List[dict]:
@@ -65,6 +72,11 @@ class DOTADataset(BaseDataset):
                 img_id = img_name[:-4]
                 data_info['img_id'] = img_id
 
+                if self.return_classes:
+                    data_info['text'] = self.metainfo['classes']
+                    data_info['caption_prompt'] = self.caption_prompt
+                    data_info['custom_entities'] = True
+
                 instance = dict(bbox=[], bbox_label=[], ignore_flag=0)
                 data_info['instances'] = [instance]
                 data_list.append(data_info)
@@ -83,6 +95,11 @@ class DOTADataset(BaseDataset):
                 data_info['file_name'] = img_name
                 data_info['img_path'] = osp.join(self.data_prefix['img_path'],
                                                  img_name)
+
+                if self.return_classes:
+                    data_info['text'] = self.metainfo['classes']
+                    data_info['caption_prompt'] = self.caption_prompt
+                    data_info['custom_entities'] = True
 
                 instances = []
                 with open(txt_file) as f:

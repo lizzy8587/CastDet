@@ -24,15 +24,19 @@ class DIORDataset(BaseDataset):
             corresponding backend. Defaults to None.
         ann_type (str): Choose obb or hbb as ground truth.
             Defaults to `obb`.
+        return_classes (bool): Whether to return class information
+            for open vocabulary-based algorithms. Defaults to False.
+        caption_prompt (dict, optional): Prompt for captioning.
+            Defaults to None.
     """
 
     METAINFO = {
         'classes':
-        ('airplane', 'airport', 'baseballfield', 'basketballcourt', 'bridge',
-         'chimney', 'expressway-service-area', 'expressway-toll-station',
-         'dam', 'golffield', 'groundtrackfield', 'harbor', 'overpass', 'ship',
-         'stadium', 'storagetank', 'tenniscourt', 'trainstation', 'vehicle',
-         'windmill'),
+        ('airplane', 'baseballfield', 'bridge', 'chimney', 'dam',
+         'expressway-service-area', 'expressway-toll-station',
+         'golffield', 'harbor', 'overpass', 'ship', 'stadium',
+         'storagetank', 'tenniscourt', 'trainstation', 'vehicle',
+         'airport', 'basketballcourt', 'groundtrackfield', 'windmill'),
         # palette is a list of color tuples, which is used for visualization.
         'palette': [(220, 20, 60), (119, 11, 32), (0, 0, 142), (0, 0, 230),
                     (106, 0, 228), (0, 60, 100), (0, 80, 100), (0, 0, 70),
@@ -47,11 +51,18 @@ class DIORDataset(BaseDataset):
                  file_client_args: dict = None,
                  backend_args: dict = None,
                  ann_type: str = 'obb',
+                 return_classes: bool = False,
+                 caption_prompt: Optional[dict] = None,
                  **kwargs) -> None:
         assert ann_type in ['hbb', 'obb']
         self.ann_type = ann_type
         self.ann_subdir = ann_subdir
         self.backend_args = backend_args
+        self.return_classes = return_classes
+        self.caption_prompt = caption_prompt
+        if self.caption_prompt is not None:
+            assert self.return_classes, \
+                'return_classes must be True when using caption_prompt'
         if file_client_args is not None:
             raise RuntimeError(
                 'The `file_client_args` is deprecated, '
@@ -133,6 +144,11 @@ class DIORDataset(BaseDataset):
 
         data_info['height'] = height
         data_info['width'] = width
+
+        if self.return_classes:
+            data_info['text'] = self.metainfo['classes']
+            data_info['caption_prompt'] = self.caption_prompt
+            data_info['custom_entities'] = True
 
         instances = []
         for obj in root.findall('object'):

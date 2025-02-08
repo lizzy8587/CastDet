@@ -13,11 +13,23 @@ from .rotated_retina_head import RotatedRetinaHead
 from .rotated_rtmdet_head import RotatedRTMDetHead, RotatedRTMDetSepBNHead
 from .s2a_head import S2AHead, S2ARefineHead
 from .sam_reppoints_head import SAMRepPointsHead
+from .rhino_align_head import RHINOAlignHead
+from .rhino_head import RHINOHead
+from .rhino_ph_head import RHINOPositiveHungarianHead
+from .rhino_phc_head import RHINOPositiveHungarianClassificationHead
+from .rotated_conditional_detr_head import RotatedConditionalDETRHead
+from .rotated_dab_detr_head import RotatedDABDETRHead
+from .rotated_deformable_detr_head import RotatedDeformableDETRHead
+from .rotated_detr_head import RotatedDETRHead
+
 
 __all__ = [
     'RotatedRetinaHead', 'OrientedRPNHead', 'RotatedRepPointsHead',
     'SAMRepPointsHead', 'AngleBranchRetinaHead', 'RotatedATSSHead',
     'RotatedFCOSHead', 'OrientedRepPointsHead', 'R3Head', 'R3RefineHead',
     'S2AHead', 'S2ARefineHead', 'CFAHead', 'H2RBoxHead', 'H2RBoxV2Head',
-    'RotatedRTMDetHead', 'RotatedRTMDetSepBNHead'
+    'RotatedRTMDetHead', 'RotatedRTMDetSepBNHead', 'RotatedDETRHead',
+    'RotatedDeformableDETRHead', 'RotatedConditionalDETRHead',
+    'RotatedDABDETRHead', 'RHINOHead', 'RHINOPositiveHungarianHead',
+    'RHINOPositiveHungarianClassificationHead', 'RHINOAlignHead'
 ]

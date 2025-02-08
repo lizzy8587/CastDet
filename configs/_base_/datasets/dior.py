@@ -8,6 +8,7 @@ train_pipeline = [
     dict(type='mmdet.LoadAnnotations', with_bbox=True, box_type='qbox'),
     dict(type='ConvertBoxType', box_type_mapping=dict(gt_bboxes='rbox')),
     dict(type='mmdet.Resize', scale=(800, 800), keep_ratio=True),
+    dict(type='mmdet.FilterAnnotations', min_gt_bbox_wh=(1e-2, 1e-2)),
     dict(
         type='mmdet.RandomFlip',
         prob=0.75,
